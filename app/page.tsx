@@ -1,0 +1,61 @@
+'use client'
+
+import Image from 'next/image'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ArrowDownRight, ArrowLeft, ArrowRight, Menu, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
+const whatsapp = 'https://wa.me/56944544938'
+const slides = [
+  { quote: 'Espacios que hablan de ti.', image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2200&q=85' },
+  { quote: 'Diseño con intención.', image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2200&q=85' },
+  { quote: 'Estética y protección.', image: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=2200&q=85' },
+  { quote: 'Tu espacio. Nuestra mirada.', image: 'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=2200&q=85' },
+]
+const projectImages = [
+  { title: 'Casa Niebla', location: 'Lo Barnechea, Santiago', category: 'Interiorismo residencial', image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=85', className: 'md:col-span-7 md:row-span-2' },
+  { title: 'Oficinas Norte', location: 'Vitacura, Santiago', category: 'Diseño de ambientes', image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1000&q=85', className: 'md:col-span-5' },
+  { title: 'Casa H', location: 'Chicureo, Santiago', category: 'Decoración', image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1000&q=85', className: 'md:col-span-5' },
+  { title: 'Punto Central', location: 'Providencia, Santiago', category: 'Seguridad integrada', image: 'https://images.unsplash.com/photo-1558008258-3256797b43f3?auto=format&fit=crop&w=1200&q=85', className: 'md:col-span-7' },
+]
+
+function Header({ open, setOpen }: { open: boolean; setOpen: (value: boolean) => void }) {
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => { const onScroll = () => setScrolled(window.scrollY > 30); window.addEventListener('scroll', onScroll); return () => window.removeEventListener('scroll', onScroll) }, [])
+  const links = [['Inicio', 'inicio'], ['Espacios', 'espacios'], ['Protección', 'proteccion'], ['Proyectos', 'proyectos'], ['Contacto', 'contacto']]
+  return <header className={`fixed inset-x-0 top-0 z-30 transition-colors duration-500 ${scrolled ? 'bg-[rgba(244,242,237,.96)] text-[#1e1e1b] shadow-[0_1px_0_rgba(30,30,27,.08)]' : 'text-white'}`}>
+    <div className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between px-6 md:px-10">
+      <a href="#inicio" className="font-display text-[21px] font-semibold tracking-[.28em]">LUMEN</a>
+      <nav className="hidden items-center gap-8 text-[11px] uppercase tracking-[.2em] md:flex">{links.map(([label, id]) => <a key={id} href={`#${id}`} className="transition-opacity hover:opacity-50">{label}</a>)}</nav>
+      <button aria-label={open ? 'Cerrar menú' : 'Abrir menú'} onClick={() => setOpen(!open)} className="flex size-11 items-center justify-center md:hidden">{open ? <X size={20} /> : <Menu size={20} />}</button>
+    </div>
+    <AnimatePresence>{open && <motion.nav initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden bg-[#f4f2ed] text-[#1e1e1b] md:hidden"><div className="flex flex-col gap-5 px-6 pb-7 pt-2 text-sm uppercase tracking-[.18em]">{links.map(([label, id]) => <a onClick={() => setOpen(false)} key={id} href={`#${id}`}>{label}</a>)}</div></motion.nav>}</AnimatePresence>
+  </header>
+}
+
+function Hero() {
+  const [active, setActive] = useState(0)
+  useEffect(() => { const timer = setInterval(() => setActive((current) => (current + 1) % slides.length), 6500); return () => clearInterval(timer) }, [])
+  const move = (direction: number) => setActive((active + direction + slides.length) % slides.length)
+  return <section id="inicio" className="relative flex min-h-[760px] h-screen items-end overflow-hidden bg-[#252521] text-white">
+    <AnimatePresence mode="wait"> <motion.div key={active} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1.2 }} className="absolute inset-0"><Image src={slides[active].image} alt="Interior contemporáneo LUMEN" fill priority={active === 0} sizes="100vw" className="hero-image object-cover" /></motion.div></AnimatePresence>
+    <div className="absolute inset-0 bg-black/30" />
+    <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 pb-10 md:px-10 md:pb-14">
+      <div className="flex min-h-[460px] flex-col justify-end md:min-h-[560px]"><p className="mb-5 text-[10px] uppercase tracking-[.28em] text-white/65">Interiorismo · Decoración · Seguridad</p><h1 className="max-w-3xl font-display text-[clamp(2.8rem,7vw,6.8rem)] font-medium leading-[.95] tracking-[-.055em]">{slides[active].quote}</h1></div>
+      <div className="mt-14 flex items-end justify-between border-t border-white/30 pt-5"><a href={whatsapp} target="_blank" rel="noreferrer" className="group flex items-center gap-3 text-xs uppercase tracking-[.2em]">Conversemos <ArrowDownRight className="transition-transform group-hover:translate-x-1 group-hover:translate-y-1" size={16} /></a><div className="flex items-center gap-5"><span className="text-[11px] tracking-[.2em]">0{active + 1} <span className="text-white/40">/ 04</span></span><div className="flex gap-2"><button aria-label="Anterior" onClick={() => move(-1)} className="flex size-10 items-center justify-center rounded-full border border-white/30 transition-colors hover:bg-white hover:text-[#1e1e1b]"><ArrowLeft size={15} /></button><button aria-label="Siguiente" onClick={() => move(1)} className="flex size-10 items-center justify-center rounded-full border border-white/30 transition-colors hover:bg-white hover:text-[#1e1e1b]"><ArrowRight size={15} /></button></div></div></div>
+    </div>
+  </section>
+}
+
+function SectionIntro({ number, eyebrow, title, children }: { number: string; eyebrow: string; title: string; children: React.ReactNode }) { return <div className="grid gap-8 md:grid-cols-12 md:gap-10"><div className="md:col-span-3"><p className="text-[11px] uppercase tracking-[.22em] text-[#8a8880]">{number} — {eyebrow}</p></div><div className="md:col-span-8 md:col-start-5"><h2 className="font-display text-[clamp(2.1rem,5vw,4.8rem)] leading-[.98] tracking-[-.05em]">{title}</h2><div className="mt-7 max-w-xl text-base leading-7 text-[#68665f]">{children}</div></div></div> }
+function ServiceList({ items }: { items: string[] }) { return <ul className="mt-10 border-t border-[#d4d0c8]">{items.map((item, i) => <li key={item} className="flex items-center justify-between border-b border-[#d4d0c8] py-4 text-sm"><span>0{i + 1}</span><span className="text-right">{item}</span></li>)}</ul> }
+
+export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false)
+  return <main><Header open={menuOpen} setOpen={setMenuOpen} /><Hero />
+    <section id="espacios" className="px-6 py-24 md:px-10 md:py-40"><div className="mx-auto max-w-[1440px]"><SectionIntro number="01" eyebrow="Espacios" title="Diseñamos espacios con carácter.">Cada proyecto nace de una conversación. Observamos cómo vives, trabajas y habitas para crear ambientes que se sienten propios, equilibrados y duraderos.</SectionIntro><div className="mt-20 grid gap-6 md:grid-cols-12"><div className="md:col-span-7"><div className="relative aspect-[4/3] overflow-hidden"><Image src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1400&q=85" alt="Living contemporáneo diseñado por LUMEN" fill sizes="(max-width: 768px) 100vw, 58vw" className="object-cover transition-transform duration-700 hover:scale-105" /></div></div><div className="flex flex-col justify-end md:col-span-4 md:col-start-9"><p className="text-sm leading-6 text-[#68665f]">Una mirada sensible sobre la materia, la luz y las proporciones.</p><ServiceList items={['Interiorismo', 'Decoración', 'Diseño de ambientes', 'Asesoría estética', 'Proyectos personalizados']} /></div></div></div></section>
+    <section id="proteccion" className="bg-[#ded9cf] px-6 py-24 md:px-10 md:py-40"><div className="mx-auto max-w-[1440px]"><SectionIntro number="02" eyebrow="Protección" title="Protección que se integra al espacio.">Soluciones de videovigilancia discretas y profesionales para hogares, oficinas y comercios. Tecnología pensada para cuidar sin interrumpir la arquitectura.</SectionIntro><div className="mt-20 grid gap-6 md:grid-cols-12"><div className="order-2 flex flex-col justify-end md:order-1 md:col-span-4"><p className="text-sm leading-6 text-[#68665f]">Instalaciones limpias, configuración precisa y acompañamiento en cada etapa.</p><ServiceList items={['Instalación de cámaras', 'Videovigilancia', 'Cámaras interiores y exteriores', 'Configuración y puesta en marcha', 'Soluciones personalizadas']} /></div><div className="order-1 md:order-2 md:col-span-7 md:col-start-6"><div className="relative aspect-[4/3] overflow-hidden"><Image src="https://images.unsplash.com/photo-1558008258-3256797b43f3?auto=format&fit=crop&w=1400&q=85" alt="Cámara de seguridad integrada en una fachada contemporánea" fill sizes="(max-width: 768px) 100vw, 58vw" className="object-cover transition-transform duration-700 hover:scale-105" /></div></div></div></div></section>
+    <section id="proyectos" className="px-6 py-24 md:px-10 md:py-40"><div className="mx-auto max-w-[1440px]"><div className="mb-16 flex items-end justify-between"><div><p className="mb-5 text-[11px] uppercase tracking-[.22em] text-[#8a8880]">03 — Proyectos</p><h2 className="font-display text-[clamp(2.4rem,6vw,5.4rem)] leading-none tracking-[-.055em]">Una selección<br />de miradas.</h2></div><p className="hidden max-w-[220px] text-sm leading-6 text-[#68665f] md:block">Cada espacio es una oportunidad para hacer visible lo esencial.</p></div><div className="grid gap-6 md:grid-cols-12 md:auto-rows-[220px]">{projectImages.map((project) => <article key={project.title} className={`group ${project.className}`}><div className="relative h-full min-h-[300px] overflow-hidden"><Image src={project.image} alt={`${project.title}, ${project.category}`} fill sizes="(max-width: 768px) 100vw, 60vw" className="object-cover transition-transform duration-700 group-hover:scale-105" /><div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-5 pb-5 pt-16 text-white"><p className="font-display text-lg">{project.title}</p><p className="mt-1 text-[10px] uppercase tracking-[.15em] text-white/70">{project.location} · {project.category}</p></div></div></article>)}</div></div></section>
+    <section id="contacto" className="bg-[#1e1e1b] px-6 py-28 text-[#f4f2ed] md:px-10 md:py-44"><div className="mx-auto max-w-[1440px]"><p className="mb-10 text-[11px] uppercase tracking-[.22em] text-[#a7a49b]">04 — Contacto</p><div className="flex flex-col justify-between gap-14 md:flex-row md:items-end"><h2 className="max-w-4xl font-display text-[clamp(2.8rem,7vw,7rem)] leading-[.9] tracking-[-.065em]">Hablemos de tu<br />próximo espacio.</h2><div className="max-w-xs"><p className="mb-8 text-base leading-7 text-[#a7a49b]">Cuéntanos qué tienes en mente. Conversemos sobre tu próximo proyecto, cotización o idea.</p><a href={whatsapp} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center gap-4 border-b border-[#f4f2ed] pb-3 text-xs uppercase tracking-[.2em] transition-opacity hover:opacity-60">Hablar por WhatsApp <ArrowDownRight size={16} /></a></div></div><div className="mt-28 flex flex-col justify-between gap-8 border-t border-white/20 pt-6 text-[10px] uppercase tracking-[.2em] text-[#a7a49b] md:flex-row"><span>LUMEN</span><span>+56 9 4454 4938</span><span>Chile · Interiorismo · Seguridad</span></div></div></section>
+  </main>
+}

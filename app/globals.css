@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+:root { --ivory: #f4f2ed; --charcoal: #1e1e1b; --stone: #8a8880; --sand: #d9d2c5; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--ivory); color: var(--charcoal); font-family: 'DM Sans', sans-serif; }
+.font-display { font-family: 'Manrope', sans-serif; }
+::selection { background: var(--charcoal); color: var(--ivory); }
+
+@keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.07); } }
+.hero-image { animation: slowZoom 10s ease-out both; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .hero-image { animation: none; } }
