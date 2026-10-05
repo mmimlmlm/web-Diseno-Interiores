@@ -1,14 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
-:root { --ivory: #f4f2ed; --charcoal: #1e1e1b; --stone: #8a8880; --sand: #d9d2c5; }
+:root { --ivory: #f3eee7; --charcoal: #11100f; --stone: #83766a; --sand: #d8c2a1; --bronze: #c9a879; --espresso: #241a15; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--ivory); color: var(--charcoal); font-family: 'DM Sans', sans-serif; }
 .font-display { font-family: 'Manrope', sans-serif; }
 
-/* Futuristic architectural layer: restrained grid, glow and motion. */
-.hero-image { filter: saturate(.82) contrast(1.08); }
+/* DOMA maximalist identity: bronze, espresso, texture and architectural motion. */
+.hero-image { filter: saturate(.78) contrast(1.14) sepia(.08); }
+.doma-metal { color: var(--bronze); text-shadow: 0 0 22px rgba(201,168,121,.24); }
+.doma-frame { border: 1px solid rgba(201,168,121,.36); box-shadow: inset 0 0 0 1px rgba(255,255,255,.05), 0 18px 55px rgba(17,16,15,.16); }
+.doma-noise { background-image: radial-gradient(rgba(255,255,255,.08) .7px, transparent .7px); background-size: 5px 5px; mix-blend-mode: overlay; }
+.doma-orbit { border: 1px solid rgba(201,168,121,.3); border-radius: 999px; transform: rotate(-18deg); }
+.doma-orbit::after { content: ''; display: block; width: 8px; height: 8px; margin: -4px 0 0 50%; border-radius: 999px; background: var(--bronze); box-shadow: 0 0 18px var(--bronze); }
 @keyframes gridDrift { from { background-position: 0 0, 0 0; } to { background-position: 44px 44px, 44px 44px; } }
 @media (prefers-reduced-motion: no-preference) { .hero-grid { animation: gridDrift 18s linear infinite; } }
 
