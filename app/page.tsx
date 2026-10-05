@@ -39,8 +39,9 @@ function Hero() {
   const move = (direction: number) => setActive((active + direction + slides.length) % slides.length)
   return <section id="inicio" className="relative flex min-h-[760px] h-screen items-end overflow-hidden bg-[#252521] text-white">
     <AnimatePresence mode="wait"> <motion.div key={active} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1.2 }} className="absolute inset-0"><Image src={slides[active].image} alt="Interior contemporáneo CONSTRUCTORA DOMA" fill priority={active === 0} sizes="100vw" className="hero-image object-cover" /></motion.div></AnimatePresence>
-    <div className="absolute inset-0 bg-black/30" />
-    <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 overflow-hidden opacity-[.13]"><p className="whitespace-nowrap text-center font-display text-[29vw] font-semibold leading-none tracking-[-.1em] text-white">ATRIA</p></div>
+    <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(4,7,7,.62),rgba(4,7,7,.18)_48%,rgba(4,7,7,.45))]" />
+    <div className="hero-grid pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(212,255,83,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(212,255,83,.06)_1px,transparent_1px)] bg-[size:44px_44px] opacity-40" />
+    <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 overflow-hidden opacity-[.11]"><p className="whitespace-nowrap text-center font-display text-[29vw] font-semibold leading-none tracking-[-.1em] text-white">DOMA</p></div>
     <div className="absolute right-6 top-1/2 z-10 hidden -translate-y-1/2 flex-col gap-3 md:flex">{slides.map((slide, index) => <button key={slide.quote} aria-label={`Ir a diapositiva ${index + 1}`} onClick={() => setActive(index)} className="group flex items-center gap-3"><span className={`h-px transition-all duration-500 ${active === index ? 'w-10 bg-white' : 'w-4 bg-white/45 group-hover:w-7'}`} /><span className="text-[9px] tracking-[.15em] text-white/70">0{index + 1}</span></button>)}</div>
     <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 pb-10 md:px-10 md:pb-14">
       <div className="flex min-h-[460px] flex-col justify-end md:min-h-[560px]"><div className="mb-8 flex items-center gap-3 text-[10px] uppercase tracking-[.28em] text-white/65"><span className="size-1.5 rounded-full bg-[#d4ff53]" /> Arquitectura · Construcción · Remodelación · Interiorismo · Paisajismo · Domótica · Seguridad</div><h1 className="max-w-3xl font-display text-[clamp(2.8rem,7vw,6.8rem)] font-medium leading-[.95] tracking-[-.055em]">{slides[active].quote}</h1></div>
@@ -57,7 +58,7 @@ export default function Home() {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'RealEstateAgent',
-    name: 'Constructora Atria',
+    name: 'Constructora DOMA',
     description: 'Constructora en Concepción, Chile. Desarrollamos y transformamos espacios integrando arquitectura, construcción, interiorismo, paisajismo, domótica y soluciones de seguridad.',
     url: 'https://constructoradoma.cl',
     telephone: '+56944544938',

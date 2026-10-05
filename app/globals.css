@@ -6,6 +6,12 @@
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--ivory); color: var(--charcoal); font-family: 'DM Sans', sans-serif; }
 .font-display { font-family: 'Manrope', sans-serif; }
+
+/* Futuristic architectural layer: restrained grid, glow and motion. */
+.hero-image { filter: saturate(.82) contrast(1.08); }
+@keyframes gridDrift { from { background-position: 0 0, 0 0; } to { background-position: 44px 44px, 44px 44px; } }
+@media (prefers-reduced-motion: no-preference) { .hero-grid { animation: gridDrift 18s linear infinite; } }
+
 ::selection { background: var(--charcoal); color: var(--ivory); }
 
 @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.07); } }
