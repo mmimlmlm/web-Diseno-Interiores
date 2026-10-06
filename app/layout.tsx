@@ -2,11 +2,17 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://domusjulia.cl'),
-  title: 'Constructora DOMA | Arquitectura, construcción y remodelación en Concepción',
-  description: 'Constructora DOMA diseña, construye y remodela espacios en Concepción y la Región del Biobío. Arquitectura, diseño de interiores, paisajismo, cámaras de seguridad y proyectos personalizados.',
+  metadataBase: new URL('https://constructoradoma.cl'),
+  title: 'Constructora DOMA | Arquitectura y remodelaciones en Concepción y San Pedro de la Paz',
+  description: 'Constructora DOMA diseña, construye y remodela espacios en Concepción, San Pedro de la Paz y la Región del Biobío. Arquitectura, interiorismo, paisajismo, domótica y seguridad.',
   keywords: [
     'constructora en Concepción',
+    'constructora en San Pedro de la Paz',
+    'empresa constructora San Pedro de la Paz',
+    'arquitectura en San Pedro de la Paz',
+    'remodelaciones en San Pedro de la Paz',
+    'diseño de interiores San Pedro de la Paz',
+    'paisajismo San Pedro de la Paz',
     'arquitectura en Concepción',
     'diseño de interiores en Concepción',
     'diseño de espacios Concepción',
@@ -31,9 +37,9 @@ export const metadata: Metadata = {
   publisher: 'Constructora DOMA',
   alternates: { canonical: '/' },
   openGraph: {
-    title: 'Constructora DOMA | Arquitectura, construcción y remodelación en Concepción',
-    description: 'Arquitectura, remodelación, diseño de interiores, paisajismo y cámaras de seguridad en Concepción y la Región del Biobío. Conoce Constructora DOMA.',
-    url: 'https://domusjulia.cl',
+    title: 'Constructora DOMA | Arquitectura y remodelaciones en Concepción y San Pedro de la Paz',
+    description: 'Arquitectura, construcción, remodelación, interiorismo, paisajismo, domótica y seguridad en Concepción, San Pedro de la Paz y el Biobío.',
+    url: 'https://constructoradoma.cl',
     siteName: 'Constructora DOMA',
     locale: 'es_CL',
     type: 'website',

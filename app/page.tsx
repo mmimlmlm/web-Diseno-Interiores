@@ -66,8 +66,12 @@ export default function Home() {
     description: 'Constructora en Concepción, Chile. Desarrollamos y transformamos espacios integrando arquitectura, construcción, interiorismo, paisajismo, domótica y soluciones de seguridad.',
     url: 'https://constructoradoma.cl',
     telephone: '+56944544938',
-    areaServed: [{ '@type': 'City', name: 'Concepción' }, { '@type': 'AdministrativeArea', name: 'Región del Biobío' }],
-    address: { '@type': 'PostalAddress', addressLocality: 'Concepción', addressRegion: 'Biobío', addressCountry: 'CL' },
+areaServed: [
+    { '@type': 'City', name: 'Concepción' },
+    { '@type': 'City', name: 'San Pedro de la Paz' },
+    { '@type': 'AdministrativeArea', name: 'Región del Biobío' },
+  ],
+  address: { '@type': 'PostalAddress', addressLocality: 'Concepción', addressRegion: 'Biobío', addressCountry: 'CL' },
     sameAs: [instagram, 'https://wa.me/56944544938'],
   }
   return <main><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /><Header open={menuOpen} setOpen={setMenuOpen} /><Hero />
