@@ -1,0 +1,121 @@
+'use client'
+
+import Image from 'next/image'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ArrowDownRight, ArrowLeft, ArrowRight, Loader2, Menu, MessageCircle, Send, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
+const whatsapp = 'https://wa.me/56944544938'
+const instagram = 'https://www.instagram.com/cdoma.cl?stkn=MTU1dmNxYmlhNXB0Ng%3D%3D&utm_source=qr'
+const slides = [
+  { quote: 'Espacios que hablan de ti.', image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2200&q=85' },
+  { quote: 'Diseño con intención.', image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2200&q=85' },
+  { quote: 'Estética y protección.', image: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=2200&q=85' },
+  { quote: 'Tu espacio. Nuestra mirada.', image: 'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=2200&q=85' },
+]
+const projectImages = [
+  { title: 'Casa Niebla', location: 'Lo Barnechea, Santiago', category: 'Interiorismo residencial', image: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=85', className: 'md:col-span-7 md:row-span-2' },
+  { title: 'Oficinas Norte', location: 'Vitacura, Santiago', category: 'Diseño de ambientes', image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1000&q=85', className: 'md:col-span-5' },
+  { title: 'Casa H', location: 'Chicureo, Santiago', category: 'Decoración', image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1000&q=85', className: 'md:col-span-5' },
+  { title: 'Punto Central', location: 'Providencia, Santiago', category: 'Seguridad integrada', image: 'https://images.unsplash.com/photo-1558008258-3256797b43f3?auto=format&fit=crop&w=1200&q=85', className: 'md:col-span-7' },
+]
+
+function Header({ open, setOpen }: { open: boolean; setOpen: (value: boolean) => void }) {
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => { const onScroll = () => setScrolled(window.scrollY > 30); window.addEventListener('scroll', onScroll); return () => window.removeEventListener('scroll', onScroll) }, [])
+  const links = [['Inicio', 'inicio'], ['Espacios', 'espacios'], ['Remodelaciones', 'remodelaciones'], ['Propiedades', 'propiedades'], ['Contacto', 'contacto']]
+  return <header className={`fixed inset-x-0 top-0 z-30 transition-colors duration-500 ${scrolled ? 'bg-[rgba(244,242,237,.96)] text-[#1e1e1b] shadow-[0_1px_0_rgba(30,30,27,.08)]' : 'text-white'}`}>
+    <div className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between px-6 md:px-10">
+      <a href="#inicio" aria-label="Constructora DOMA, inicio" className="group flex items-center gap-3"><span className="relative size-10 overflow-hidden rounded-full border border-[#c9a879]/70 shadow-[0_0_24px_rgba(201,168,121,.2)]"><Image src="/images/doma-logo.jpeg" alt="Logo DOMA" fill sizes="40px" className="object-cover" /></span><span className="font-display text-[21px] font-semibold tracking-[.28em]">DOMA</span></a>
+      <nav className="hidden items-center gap-8 text-[11px] uppercase tracking-[.2em] md:flex">{links.map(([label, id]) => <a key={id} href={`#${id}`} className="transition-opacity hover:opacity-50">{label}</a>)}</nav>
+      <button aria-label={open ? 'Cerrar menú' : 'Abrir menú'} onClick={() => setOpen(!open)} className="flex size-11 items-center justify-center md:hidden">{open ? <X size={20} /> : <Menu size={20} />}</button>
+    </div>
+    <AnimatePresence>{open && <motion.nav initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden bg-[#f4f2ed] text-[#1e1e1b] md:hidden"><div className="flex flex-col gap-5 px-6 pb-7 pt-2 text-sm uppercase tracking-[.18em]">{links.map(([label, id]) => <a onClick={() => setOpen(false)} key={id} href={`#${id}`}>{label}</a>)}</div></motion.nav>}</AnimatePresence>
+  </header>
+}
+
+function Hero() {
+  const [active, setActive] = useState(0)
+  useEffect(() => { const timer = setInterval(() => setActive((current) => (current + 1) % slides.length), 6500); return () => clearInterval(timer) }, [])
+  const move = (direction: number) => setActive((active + direction + slides.length) % slides.length)
+  return <section id="inicio" className="relative flex min-h-[760px] h-screen items-end overflow-hidden bg-[#252521] text-white">
+    <AnimatePresence mode="wait"> <motion.div key={active} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1.2 }} className="absolute inset-0"><Image src={slides[active].image} alt="Interior contemporáneo CONSTRUCTORA DOMA" fill priority={active === 0} sizes="100vw" className="hero-image object-cover" /></motion.div></AnimatePresence>
+    <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(4,7,7,.62),rgba(4,7,7,.18)_48%,rgba(4,7,7,.45))]" />
+    <div className="hero-grid pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(201,168,121,.1)_1px,transparent_1px),linear-gradient(90deg,rgba(201,168,121,.1)_1px,transparent_1px)] bg-[size:44px_44px] opacity-50" />
+    <div className="doma-noise pointer-events-none absolute inset-0 opacity-20" />
+    <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 overflow-hidden opacity-[.13]"><p className="whitespace-nowrap text-center font-display text-[29vw] font-semibold leading-none tracking-[-.1em] text-[#c9a879]">DOMA</p></div>
+    <div className="doma-orbit pointer-events-none absolute -right-28 top-28 size-[28rem] opacity-70 md:-right-20 md:top-20 md:size-[38rem]" />
+    <div className="doma-frame pointer-events-none absolute right-6 top-28 hidden size-24 overflow-hidden md:block"><Image src="/images/doma-logo.jpeg" alt="" fill sizes="96px" className="object-cover opacity-80" /></div>
+    <div className="absolute right-6 top-1/2 z-10 hidden -translate-y-1/2 flex-col gap-3 md:flex">{slides.map((slide, index) => <button key={slide.quote} aria-label={`Ir a diapositiva ${index + 1}`} onClick={() => setActive(index)} className="group flex items-center gap-3"><span className={`h-px transition-all duration-500 ${active === index ? 'w-10 bg-white' : 'w-4 bg-white/45 group-hover:w-7'}`} /><span className="text-[9px] tracking-[.15em] text-white/70">0{index + 1}</span></button>)}</div>
+    <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 pb-10 md:px-10 md:pb-14">
+      <div className="flex min-h-[460px] flex-col justify-end md:min-h-[560px]"><div className="mb-8 flex items-center gap-3 text-[10px] uppercase tracking-[.28em] text-white/65"><span className="size-1.5 rounded-full bg-[#c9a879]" /> Construcción · Terminaciones · Diseño · Seguridad · Domótica</div><h1 className="max-w-3xl font-display text-[clamp(2.8rem,7vw,6.8rem)] font-medium leading-[.95] tracking-[-.055em]">{slides[active].quote}</h1></div>
+      <div className="mt-14 flex items-end justify-between border-t border-white/30 pt-5"><a href={whatsapp} target="_blank" rel="noreferrer" className="group flex items-center gap-3 text-xs uppercase tracking-[.2em]">Conversemos <ArrowDownRight className="transition-transform group-hover:translate-x-1 group-hover:translate-y-1" size={16} /></a><div className="flex items-center gap-5"><span className="text-[11px] tracking-[.2em]">0{active + 1} <span className="text-white/40">/ 04</span></span><div className="flex gap-2"><button aria-label="Anterior" onClick={() => move(-1)} className="flex size-10 items-center justify-center rounded-full border border-white/30 transition-colors hover:bg-white hover:text-[#1e1e1b]"><ArrowLeft size={15} /></button><button aria-label="Siguiente" onClick={() => move(1)} className="flex size-10 items-center justify-center rounded-full border border-white/30 transition-colors hover:bg-white hover:text-[#1e1e1b]"><ArrowRight size={15} /></button></div></div></div>
+    </div>
+  </section>
+}
+
+function SectionIntro({ number, eyebrow, title, children }: { number: string; eyebrow: string; title: string; children: React.ReactNode }) { return <div className="grid gap-8 md:grid-cols-12 md:gap-10"><div className="md:col-span-3"><p className="text-[11px] uppercase tracking-[.22em] text-[#8a8880]">{number} — {eyebrow}</p></div><div className="md:col-span-8 md:col-start-5"><h2 className="font-display text-[clamp(2.1rem,5vw,4.8rem)] leading-[.98] tracking-[-.05em]">{title}</h2><div className="mt-7 max-w-xl text-base leading-7 text-[#68665f]">{children}</div></div></div> }
+function ServiceList({ items }: { items: string[] }) { return <ul className="mt-10 border-t border-[#d4d0c8]">{items.map((item, i) => <li key={item} className="flex items-center justify-between border-b border-[#d4d0c8] py-4 text-sm"><span>0{i + 1}</span><span className="text-right">{item}</span></li>)}</ul> }
+
+function DomaChat() {
+  const [open, setOpen] = useState(false)
+  const [input, setInput] = useState('')
+  const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([
+    { role: 'assistant', content: 'Hola. Soy DOMA. ¿En qué podemos ayudarte con tu proyecto?' },
+  ])
+  const [loading, setLoading] = useState(false)
+
+  async function submit(event: React.FormEvent) {
+    event.preventDefault()
+    if (!input.trim() || loading) return
+    const next = [...messages, { role: 'user' as const, content: input.trim() }]
+    setMessages(next)
+    setInput('')
+    setLoading(true)
+    try {
+      const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: next }) })
+      const data = await response.json()
+      setMessages((current) => [...current, { role: 'assistant', content: data.text ?? 'Escríbenos por WhatsApp y te ayudaremos directamente.' }])
+    } catch {
+      setMessages((current) => [...current, { role: 'assistant', content: 'No pudimos conectar ahora. Puedes escribirnos por WhatsApp al +56 9 4454 4938.' }])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return <div className="fixed bottom-5 right-5 z-40 md:bottom-7 md:right-7">
+    {open && <motion.section initial={{ opacity: 0, y: 18, scale: .96 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="mb-3 flex w-[calc(100vw-2.5rem)] max-w-[360px] flex-col overflow-hidden rounded-2xl border border-[#c9a879]/35 bg-[#171411] text-[#f3eee7] shadow-[0_24px_80px_rgba(0,0,0,.35)]" aria-label="Chat de DOMA">
+      <div className="flex items-center justify-between border-b border-white/10 px-5 py-4"><div><p className="font-display text-lg">DOMA / IA</p><p className="mt-1 text-[10px] uppercase tracking-[.16em] text-[#c9a879]">Asistente de proyectos</p></div><button onClick={() => setOpen(false)} aria-label="Cerrar chat" className="flex size-10 items-center justify-center rounded-full border border-white/15"><X size={16} /></button></div>
+      <div className="flex max-h-[300px] flex-col gap-3 overflow-y-auto px-4 py-4">{messages.map((message, index) => <div key={`${message.role}-${index}`} className={`max-w-[88%] rounded-xl px-3 py-2.5 text-sm leading-5 ${message.role === 'user' ? 'self-end bg-[#c9a879] text-[#171411]' : 'bg-white/10 text-[#f3eee7]'}`}>{message.content}</div>)}{loading && <div className="flex items-center gap-2 text-xs text-[#c9a879]"><Loader2 className="animate-spin" size={14} /> Pensando</div>}</div>
+      <form onSubmit={submit} className="flex gap-2 border-t border-white/10 p-3"><label htmlFor="doma-chat-input" className="sr-only">Escribe tu pregunta</label><input id="doma-chat-input" value={input} onChange={(event) => setInput(event.target.value)} placeholder="Escribe tu pregunta..." className="min-w-0 flex-1 rounded-lg border border-white/10 bg-white/5 px-3 py-3 text-base text-white outline-none placeholder:text-white/45 focus:border-[#c9a879]" /><button type="submit" aria-label="Enviar pregunta" disabled={loading || !input.trim()} className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-[#c9a879] text-[#171411] disabled:opacity-40"><Send size={16} /></button></form>
+    </motion.section>}
+    <button onClick={() => setOpen((value) => !value)} aria-expanded={open} aria-label={open ? 'Cerrar asistente DOMA' : 'Abrir asistente DOMA'} className="ml-auto flex size-14 items-center justify-center rounded-full border border-[#c9a879]/60 bg-[#171411] text-[#c9a879] shadow-[0_12px_35px_rgba(0,0,0,.28)] transition-transform hover:scale-105"><MessageCircle size={22} /></button>
+  </div>
+}
+
+export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'GeneralContractor',
+    name: 'Constructora DOMA',
+    description: 'Constructora DOMA en Concepción y San Pedro de la Paz: construcción, terminaciones, diseño, seguridad perimetral y domótica para espacios contemporáneos.',
+    url: 'https://constructoradoma.cl',
+    telephone: '+56944544938',
+areaServed: [
+    { '@type': 'City', name: 'Concepción' },
+    { '@type': 'City', name: 'San Pedro de la Paz' },
+    { '@type': 'AdministrativeArea', name: 'Región del Biobío' },
+  ],
+  address: { '@type': 'PostalAddress', addressLocality: 'Concepción', addressRegion: 'Biobío', addressCountry: 'CL' },
+    sameAs: [instagram, 'https://wa.me/56944544938'],
+  }
+  return <main><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /><Header open={menuOpen} setOpen={setMenuOpen} /><Hero /><DomaChat />
+    <section id="propiedades" className="bg-[#ebe7df] px-6 py-24 md:px-10 md:py-36"><div className="mx-auto max-w-[1440px]"><SectionIntro number="01" eyebrow="Propiedades" title="Encuentra un lugar para tu próxima historia.">Como corredora de propiedades en Concepción, acompañamos cada compra, venta y arriendo con criterio, transparencia y una mirada atenta a lo que hace especial a cada espacio.</SectionIntro><div className="mt-16 grid gap-5 md:grid-cols-3"><div className="border-t border-[#c8c2b8] pt-5"><p className="font-display text-2xl">Compra y venta</p><p className="mt-3 text-sm leading-6 text-[#68665f]">Valoramos tu propiedad y construimos una estrategia para presentarla de forma precisa.</p></div><div className="border-t border-[#c8c2b8] pt-5"><p className="font-display text-2xl">Arriendos</p><p className="mt-3 text-sm leading-6 text-[#68665f]">Conectamos personas con casas, departamentos y espacios que responden a su forma de vivir.</p></div><div className="border-t border-[#c8c2b8] pt-5"><p className="font-display text-2xl">Concepción y Biobío</p><p className="mt-3 text-sm leading-6 text-[#68665f]">Conocimiento local para acompañarte en Concepción y las comunas de la Región del Biobío.</p></div></div><a href={whatsapp} target="_blank" rel="noreferrer" className="mt-12 inline-flex min-h-12 items-center gap-3 border-b border-[#1e1e1b] pb-3 text-xs uppercase tracking-[.2em]">Consultar propiedades <ArrowDownRight size={16} /></a></div></section>
+    <section id="espacios" className="px-6 py-24 md:px-10 md:py-40"><div className="mx-auto max-w-[1440px]"><SectionIntro number="01" eyebrow="Espacios" title="Diseñamos espacios con carácter.">En Constructora DOMA desarrollamos y transformamos espacios desde la construcción, las terminaciones y el diseño hasta la seguridad y la domótica. Nos ocupamos de cada proyecto de manera integral, desde la planificación hasta la ejecución y los detalles finales, incorporando tecnología para mejorar el confort, la eficiencia y el control de cada espacio.</SectionIntro><div className="mt-20 grid gap-6 md:grid-cols-12"><div className="md:col-span-7"><div className="relative aspect-[4/3] overflow-hidden"><Image src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1400&q=85" alt="Living contemporáneo diseñado por CONSTRUCTORA DOMA" fill sizes="(max-width: 768px) 100vw, 58vw" className="object-cover transition-transform duration-700 hover:scale-105" /></div></div><div className="flex flex-col justify-end md:col-span-4 md:col-start-9"><p className="text-sm leading-6 text-[#68665f]">Una mirada sensible sobre la materia, la luz y las proporciones.</p><ServiceList items={['Interiorismo', 'Decoración', 'Diseño de ambientes', 'Asesoría estética', 'Proyectos personalizados']} /></div></div></div></section>
+    <section id="remodelaciones" className="bg-[#ebe7df] px-6 py-24 md:px-10 md:py-40"><div className="mx-auto max-w-[1440px]"><SectionIntro number="02" eyebrow="Remodelaciones" title="Transformamos la forma de habitar.">Planificamos remodelaciones integrales y parciales para casas, departamentos, oficinas y comercios en Concepción. Desde la distribución hasta los detalles finales, cuidamos cada decisión.</SectionIntro><div className="mt-16 grid gap-5 md:grid-cols-3"><div className="border-t border-[#c8c2b8] pt-5"><p className="font-display text-2xl">Remodelación integral</p><p className="mt-3 text-sm leading-6 text-[#68665f]">Una visión completa para renovar la identidad, funcionalidad y materialidad de tu espacio.</p></div><div className="border-t border-[#c8c2b8] pt-5"><p className="font-display text-2xl">Cocinas y baños</p><p className="mt-3 text-sm leading-6 text-[#68665f]">Diseño de ambientes esenciales con soluciones duraderas, sobrias y a tu medida.</p></div><div className="border-t border-[#c8c2b8] pt-5"><p className="font-display text-2xl">Dirección de proyecto</p><p className="mt-3 text-sm leading-6 text-[#68665f]">Acompañamiento cercano para ordenar decisiones, etapas y ejecución.</p></div></div><a href={whatsapp} target="_blank" rel="noreferrer" className="mt-12 inline-flex min-h-12 items-center gap-3 border-b border-[#1e1e1b] pb-3 text-xs uppercase tracking-[.2em]">Cotizar remodelación <ArrowDownRight size={16} /></a></div></section>
+    <section id="proteccion" className="bg-[#ded9cf] px-6 py-24 md:px-10 md:py-40"><div className="mx-auto max-w-[1440px]"><SectionIntro number="02" eyebrow="Protección" title="Protección que se integra al espacio.">Soluciones de videovigilancia discretas y profesionales para hogares, oficinas y comercios. Tecnología pensada para cuidar sin interrumpir la arquitectura.</SectionIntro><div className="mt-20 grid gap-6 md:grid-cols-12"><div className="order-2 flex flex-col justify-end md:order-1 md:col-span-4"><p className="text-sm leading-6 text-[#68665f]">Instalaciones limpias, configuración precisa y acompañamiento en cada etapa.</p><ServiceList items={['Instalación de cámaras', 'Videovigilancia', 'Cámaras interiores y exteriores', 'Configuración y puesta en marcha', 'Soluciones personalizadas']} /></div><div className="order-1 md:order-2 md:col-span-7 md:col-start-6"><div className="relative aspect-[4/3] overflow-hidden"><Image src="https://images.unsplash.com/photo-1558008258-3256797b43f3?auto=format&fit=crop&w=1400&q=85" alt="Cámara de seguridad integrada en una fachada contemporánea" fill sizes="(max-width: 768px) 100vw, 58vw" className="object-cover transition-transform duration-700 hover:scale-105" /></div></div></div></div></section>
+    <section id="proyectos" className="px-6 py-24 md:px-10 md:py-40"><div className="mx-auto max-w-[1440px]"><div className="mb-16 flex items-end justify-between"><div><p className="mb-5 text-[11px] uppercase tracking-[.22em] text-[#8a8880]">03 — Proyectos</p><h2 className="font-display text-[clamp(2.4rem,6vw,5.4rem)] leading-none tracking-[-.055em]">Arquitectura<br />que se vive.</h2></div><p className="hidden max-w-[220px] text-sm leading-6 text-[#68665f] md:block">Cada espacio es una oportunidad para hacer visible lo esencial.</p></div><div className="grid gap-6 md:grid-cols-12 md:auto-rows-[220px]">{projectImages.map((project) => <article key={project.title} className={`group ${project.className}`}><div className="relative h-full min-h-[300px] overflow-hidden"><Image src={project.image} alt={`${project.title}, ${project.category}`} fill sizes="(max-width: 768px) 100vw, 60vw" className="object-cover transition-transform duration-700 group-hover:scale-105" /><div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-5 pb-5 pt-16 text-white"><p className="font-display text-lg">{project.title}</p><p className="mt-1 text-[10px] uppercase tracking-[.15em] text-white/70">{project.location} · {project.category}</p></div></div></article>)}</div></div></section>
+    <section id="contacto" className="bg-[#1e1e1b] px-6 py-28 text-[#f4f2ed] md:px-10 md:py-44"><div className="mx-auto max-w-[1440px]"><p className="mb-10 text-[11px] uppercase tracking-[.22em] text-[#a7a49b]">04 — Contacto</p><div className="flex flex-col justify-between gap-14 md:flex-row md:items-end"><h2 className="max-w-4xl font-display text-[clamp(2.8rem,7vw,7rem)] leading-[.9] tracking-[-.065em]">Hablemos de tu<br />próximo espacio.</h2><div className="max-w-xs"><p className="mb-8 text-base leading-7 text-[#a7a49b]">Cuéntanos qué estás buscando. Conversemos sobre tu próximo proyecto de construcción, terminaciones, diseño, seguridad o domótica en Concepción y San Pedro de la Paz.</p><a href={whatsapp} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center gap-4 border-b border-[#f4f2ed] pb-3 text-xs uppercase tracking-[.2em] transition-opacity hover:opacity-60">Hablar por WhatsApp <ArrowDownRight size={16} /></a></div></div><div className="mt-28 flex flex-col justify-between gap-8 border-t border-white/20 pt-6 text-[10px] uppercase tracking-[.2em] text-[#a7a49b] md:flex-row"><span>CONSTRUCTORA DOMA</span><span>+56 9 4454 4938</span><span>Concepción · Arquitectura · Espacios</span><a href={instagram} target="_blank" rel="noreferrer" className="transition-colors hover:text-[#c9a879]">Instagram</a></div></div></section>
+  </main>
+}
