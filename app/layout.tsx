@@ -3,8 +3,8 @@ import './globals.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://constructoradoma.cl'),
-  title: 'Constructora DOMA | Construcción, terminaciones y diseño en Concepción',
-  description: 'Constructora DOMA ejecuta construcción, terminaciones y diseño de espacios en Concepción y San Pedro de la Paz, con soluciones de seguridad perimetral.',
+  title: 'Constructora DOMA | Construcción, terminaciones, diseño y domótica en Concepción',
+  description: 'Constructora DOMA ejecuta proyectos de construcción, terminaciones y diseño en Concepción y San Pedro de la Paz, integrando seguridad perimetral y domótica.',
   keywords: [
     'constructora en Concepción',
     'constructora en San Pedro de la Paz',
@@ -19,6 +19,10 @@ export const metadata: Metadata = {
     'remodelaciones en Concepción',
     'empresa de remodelaciones Concepción',
     'paisajismo en Concepción',
+    'terminaciones de construcción Concepción',
+    'diseño de espacios Concepción',
+    'seguridad perimetral Concepción',
+    'domótica para casas Concepción',
     'cámaras de seguridad Concepción',
     'remodelación de casas en Concepción',
     'interiorismo en Concepción Chile',
@@ -37,8 +41,8 @@ export const metadata: Metadata = {
   publisher: 'Constructora DOMA',
   alternates: { canonical: '/' },
   openGraph: {
-    title: 'Constructora DOMA | Arquitectura y remodelaciones en Concepción y San Pedro de la Paz',
-    description: 'Arquitectura, construcción, remodelación, interiorismo, paisajismo, domótica y seguridad en Concepción, San Pedro de la Paz y el Biobío.',
+    title: 'Constructora DOMA | Construcción, terminaciones y diseño en Concepción y San Pedro de la Paz',
+    description: 'Construcción, terminaciones y diseño con seguridad perimetral y domótica en Concepción, San Pedro de la Paz y la Región del Biobío.',
     url: 'https://constructoradoma.cl',
     siteName: 'Constructora DOMA',
     locale: 'es_CL',
