@@ -3,8 +3,8 @@ import './globals.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://constructoradoma.cl'),
-  title: 'Constructora DOMA | Arquitectura y remodelaciones en Concepción y San Pedro de la Paz',
-  description: 'Constructora DOMA diseña, construye y remodela espacios en Concepción, San Pedro de la Paz y la Región del Biobío. Arquitectura, interiorismo, paisajismo, domótica y seguridad.',
+  title: 'Constructora DOMA | Construcción, terminaciones y diseño en Concepción',
+  description: 'Constructora DOMA ejecuta construcción, terminaciones y diseño de espacios en Concepción y San Pedro de la Paz, con soluciones de seguridad perimetral.',
   keywords: [
     'constructora en Concepción',
     'constructora en San Pedro de la Paz',

@@ -61,9 +61,9 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false)
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'RealEstateAgent',
+    '@type': 'GeneralContractor',
     name: 'Constructora DOMA',
-    description: 'Constructora en Concepción, Chile. Desarrollamos y transformamos espacios integrando arquitectura, construcción, interiorismo, paisajismo, domótica y soluciones de seguridad.',
+    description: 'Constructora en Concepción, Chile. Desarrollamos y transformamos espacios desde la construcción y las terminaciones hasta el diseño, con soluciones de seguridad perimetral.',
     url: 'https://constructoradoma.cl',
     telephone: '+56944544938',
 areaServed: [
