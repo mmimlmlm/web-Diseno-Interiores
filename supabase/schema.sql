@@ -58,6 +58,8 @@ alter table public.doma_knowledge_chunks enable row level security;
 alter table public.doma_conversations enable row level security;
 alter table public.doma_conversation_messages enable row level security;
 revoke all on public.doma_documents, public.doma_knowledge_chunks, public.doma_conversations, public.doma_conversation_messages from anon, authenticated;
+grant all on public.doma_documents, public.doma_knowledge_chunks, public.doma_conversations, public.doma_conversation_messages to service_role;
+grant execute on function public.match_doma_knowledge(vector, double precision, integer) to service_role;
 
 insert into storage.buckets (id, name, public)
 values ('doma-documents', 'doma-documents', false)

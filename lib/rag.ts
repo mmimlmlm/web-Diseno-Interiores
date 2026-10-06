@@ -9,12 +9,16 @@ export type KnowledgeMatch = {
 }
 
 export async function retrieveKnowledge(query: string) {
-  const embedding = await createEmbedding(query)
-  return supabaseRpc<KnowledgeMatch[]>('match_doma_knowledge', {
-    query_embedding: embedding,
-    match_threshold: 0.72,
-    match_count: 6,
-  })
+  try {
+    const embedding = await createEmbedding(query)
+    return await supabaseRpc<KnowledgeMatch[]>('match_doma_knowledge', {
+      query_embedding: embedding,
+      match_threshold: 0.72,
+      match_count: 6,
+    })
+  } catch {
+    return []
+  }
 }
 
 export function formatKnowledgeContext(matches: KnowledgeMatch[]) {

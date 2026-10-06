@@ -42,11 +42,15 @@ export async function POST(request: Request) {
     ])
     if (!answer) throw new Error('Empty OpenAI response')
 
-    await ensureConversation(conversationId)
-    await Promise.all([
-      insertConversationMessage({ conversationId, role: 'user', content: message }),
-      insertConversationMessage({ conversationId, role: 'assistant', content: answer }),
-    ])
+    try {
+      await ensureConversation(conversationId)
+      await Promise.all([
+        insertConversationMessage({ conversationId, role: 'user', content: message }),
+        insertConversationMessage({ conversationId, role: 'assistant', content: answer }),
+      ])
+    } catch (persistError) {
+      safeError(persistError instanceof Error ? persistError.message : 'conversation_persist_failed')
+    }
     safeLog('chat_completed', { conversationId, matches: matches.length })
     return NextResponse.json({ text: answer, conversationId, sources: matches.map(({ metadata, similarity }) => ({ metadata, similarity })) })
   } catch (error) {
