@@ -37,6 +37,7 @@ async function main() {
     }),
   })
   console.log('match_doma_knowledge:', rpc.status, rpc.statusText)
+  if (!rpc.ok) throw new Error(`No se pudo consultar la búsqueda: ${await rpc.text()}`)
   const conv = await fetch(`${url}/rest/v1/doma_conversations`, {
     method: 'POST',
     headers: {
@@ -48,6 +49,37 @@ async function main() {
     body: JSON.stringify({ id: 'schema-check-12345678' }),
   })
   console.log('doma_conversations:', conv.status, conv.statusText)
+  if (!conv.ok) throw new Error(`No se pudo crear la conversación de prueba: ${await conv.text()}`)
+
+  const lead = await fetch(`${url}/rest/v1/doma_leads?on_conflict=conversation_id`, {
+    method: 'POST',
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      'Content-Type': 'application/json',
+      Prefer: 'resolution=merge-duplicates,return=minimal',
+    },
+    body: JSON.stringify({
+      conversation_id: 'schema-check-12345678',
+      name: 'Prueba de esquema',
+      project_type: 'paisajismo',
+    }),
+  })
+  console.log('doma_leads:', lead.status, lead.statusText)
+  if (!lead.ok) throw new Error(`No se pudo crear el cliente de prueba: ${await lead.text()}`)
+
+  const cleanup = await fetch(`${url}/rest/v1/doma_conversations?id=eq.schema-check-12345678`, {
+    method: 'DELETE',
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      Prefer: 'return=minimal',
+    },
+  })
+  if (!cleanup.ok) throw new Error(`No se pudo limpiar la prueba: ${await cleanup.text()}`)
 }
 
-main()
+main().catch((error) => {
+  console.error(error instanceof Error ? error.message : error)
+  process.exit(1)
+})

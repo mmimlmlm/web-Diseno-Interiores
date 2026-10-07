@@ -23,11 +23,53 @@ export async function createEmbedding(input: string) {
   return result.data[0].embedding
 }
 
-export async function createChatCompletion(messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>) {
+type ChatMessage = { role: 'system' | 'user' | 'assistant'; content: string }
+
+export type LeadSnapshot = {
+  name: string | null
+  phone: string | null
+  budget: string | null
+  projectType: string | null
+  projectDetails: string | null
+}
+
+export async function createProjectChatCompletion(messages: ChatMessage[]) {
   const result = await openai<{ choices: Array<{ message: { content: string } }> }>('chat/completions', {
-    model: 'gpt-4o-mini', messages, temperature: 0.35, max_tokens: 600,
+    model: 'gpt-4o-mini',
+    messages,
+    temperature: 0.35,
+    max_tokens: 700,
+    response_format: {
+      type: 'json_schema',
+      json_schema: {
+        name: 'doma_project_chat',
+        strict: true,
+        schema: {
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            text: { type: 'string' },
+            lead: {
+              type: 'object',
+              additionalProperties: false,
+              properties: {
+                name: { type: ['string', 'null'] },
+                phone: { type: ['string', 'null'] },
+                budget: { type: ['string', 'null'] },
+                projectType: { type: ['string', 'null'] },
+                projectDetails: { type: ['string', 'null'] },
+              },
+              required: ['name', 'phone', 'budget', 'projectType', 'projectDetails'],
+            },
+          },
+          required: ['text', 'lead'],
+        },
+      },
+    },
   })
-  return result.choices[0]?.message.content?.trim() ?? ''
+  const content = result.choices[0]?.message.content
+  if (!content) throw new Error('Empty OpenAI response')
+  return JSON.parse(content) as { text: string; lead: LeadSnapshot }
 }
 
 export function openAiIsConfigured() { return Boolean(apiKey) }

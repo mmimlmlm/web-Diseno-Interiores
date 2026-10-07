@@ -26,6 +26,22 @@ create table if not exists public.doma_conversations (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.doma_leads (
+  id uuid primary key default gen_random_uuid(),
+  conversation_id text not null unique references public.doma_conversations(id) on delete cascade,
+  name text check (char_length(name) <= 200),
+  phone text check (char_length(phone) <= 50),
+  budget text check (char_length(budget) <= 200),
+  project_type text check (char_length(project_type) <= 200),
+  project_details text check (char_length(project_details) <= 3000),
+  status text not null default 'nuevo' check (status in ('nuevo', 'contactado', 'calificado', 'cerrado')),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.doma_leads alter column project_type drop default;
+alter table public.doma_leads alter column project_type drop not null;
+
 create table if not exists public.doma_conversation_messages (
   id uuid primary key default gen_random_uuid(),
   conversation_id text not null references public.doma_conversations(id) on delete cascade,
@@ -56,9 +72,10 @@ $$;
 alter table public.doma_documents enable row level security;
 alter table public.doma_knowledge_chunks enable row level security;
 alter table public.doma_conversations enable row level security;
+alter table public.doma_leads enable row level security;
 alter table public.doma_conversation_messages enable row level security;
-revoke all on public.doma_documents, public.doma_knowledge_chunks, public.doma_conversations, public.doma_conversation_messages from anon, authenticated;
-grant all on public.doma_documents, public.doma_knowledge_chunks, public.doma_conversations, public.doma_conversation_messages to service_role;
+revoke all on public.doma_documents, public.doma_knowledge_chunks, public.doma_conversations, public.doma_leads, public.doma_conversation_messages from anon, authenticated;
+grant all on public.doma_documents, public.doma_knowledge_chunks, public.doma_conversations, public.doma_leads, public.doma_conversation_messages to service_role;
 grant execute on function public.match_doma_knowledge(vector, double precision, integer) to service_role;
 
 insert into storage.buckets (id, name, public)
