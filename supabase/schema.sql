@@ -21,6 +21,23 @@ create table if not exists public.doma_knowledge_chunks (
 create index if not exists doma_knowledge_chunks_embedding_idx
 on public.doma_knowledge_chunks using hnsw (embedding vector_cosine_ops);
 
+create table if not exists public.doma_price_guides (
+  id uuid primary key default gen_random_uuid(),
+  service text not null,
+  category text not null default 'precios',
+  min_price numeric not null check (min_price >= 0),
+  max_price numeric not null check (max_price >= min_price),
+  unit text not null,
+  currency text not null default 'CLP',
+  source text not null default 'Rango referencial de mercado chileno',
+  notes text not null default '',
+  updated_at timestamptz not null default now()
+);
+
+alter table public.doma_price_guides enable row level security;
+revoke all on public.doma_price_guides from anon, authenticated;
+grant all on public.doma_price_guides to service_role;
+
 create table if not exists public.doma_conversations (
   id text primary key,
   created_at timestamptz not null default now()
