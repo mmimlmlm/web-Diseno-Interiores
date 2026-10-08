@@ -1,23 +1,24 @@
-const apiKey = process.env.OPENAI_API_KEY
+const gatewayKey = process.env.AI_GATEWAY_API_KEY
+const gatewayUrl = 'https://ai-gateway.vercel.sh/v1'
 
 function getKey() {
-  if (!apiKey) throw new Error('OPENAI_API_KEY is not configured')
-  return apiKey
+  if (!gatewayKey) throw new Error('AI_GATEWAY_API_KEY is not configured')
+  return gatewayKey
 }
 
-async function openai<T>(path: string, body: Record<string, unknown>): Promise<T> {
-  const response = await fetch(`https://api.openai.com/v1/${path}`, {
+async function gateway<T>(path: string, body: Record<string, unknown>): Promise<T> {
+  const response = await fetch(`${gatewayUrl}/${path}`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${getKey()}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
     cache: 'no-store',
   })
-  if (!response.ok) throw new Error(`OpenAI request failed: ${response.status}`)
+  if (!response.ok) throw new Error(`AI Gateway request failed: ${response.status}`)
   return response.json() as Promise<T>
 }
 
 export async function createEmbedding(input: string) {
-  const result = await openai<{ data: Array<{ embedding: number[] }> }>('embeddings', {
+  const result = await gateway<{ data: Array<{ embedding: number[] }> }>('embeddings', {
     model: 'text-embedding-3-small', input,
   })
   return result.data[0].embedding
@@ -34,7 +35,7 @@ export type LeadSnapshot = {
 }
 
 export async function createProjectChatCompletion(messages: ChatMessage[]) {
-  const result = await openai<{ choices: Array<{ message: { content: string } }> }>('chat/completions', {
+  const result = await gateway<{ choices: Array<{ message: { content: string } }> }>('chat/completions', {
     model: 'gpt-4o-mini',
     messages,
     temperature: 0.35,
@@ -72,4 +73,4 @@ export async function createProjectChatCompletion(messages: ChatMessage[]) {
   return JSON.parse(content) as { text: string; lead: LeadSnapshot }
 }
 
-export function openAiIsConfigured() { return Boolean(apiKey) }
+export function openAiIsConfigured() { return Boolean(gatewayKey) }
