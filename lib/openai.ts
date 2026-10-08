@@ -73,4 +73,22 @@ export async function createProjectChatCompletion(messages: ChatMessage[]) {
   return JSON.parse(content) as { text: string; lead: LeadSnapshot }
 }
 
+export type ContentFormat = 'publicación' | 'historia' | 'reel'
+
+export async function createSocialContent(input: { format: ContentFormat; topic: string; audience: string; tone: string }) {
+  const result = await gateway<{ choices: Array<{ message: { content: string } }> }>('chat/completions', {
+    model: 'gpt-4o-mini',
+    messages: [
+      { role: 'system', content: 'Eres la directora creativa de DOMA, una marca premium de construcción, remodelación, interiorismo y paisajismo en el Biobío. Crea contenido en español de Chile: sofisticado, concreto, aspiracional y honesto. No inventes proyectos, precios, clientes, resultados ni servicios. Devuelve JSON válido con title, hook, caption, visualDirection, cta y hashtags.' },
+      { role: 'user', content: `Crea una pieza para Instagram. Formato: ${input.format}. Tema: ${input.topic}. Audiencia: ${input.audience}. Tono: ${input.tone}. Para ${input.format === 'reel' ? 'un video de 20-30 segundos con escenas sugeridas y texto en pantalla dentro de visualDirection' : input.format === 'historia' ? 'una secuencia de 3 historias, descritas dentro de caption' : 'un carrusel o publicación única'}. El CTA debe invitar a evaluar un proyecto con DOMA.` },
+    ],
+    temperature: 0.7,
+    max_tokens: 900,
+    response_format: { type: 'json_schema', json_schema: { name: 'doma_social_content', strict: true, schema: { type: 'object', additionalProperties: false, properties: { title: { type: 'string' }, hook: { type: 'string' }, caption: { type: 'string' }, visualDirection: { type: 'string' }, cta: { type: 'string' }, hashtags: { type: 'array', items: { type: 'string' } } }, required: ['title', 'hook', 'caption', 'visualDirection', 'cta', 'hashtags'] } } },
+  })
+  const content = result.choices[0]?.message.content
+  if (!content) throw new Error('Empty social content response')
+  return JSON.parse(content) as { title: string; hook: string; caption: string; visualDirection: string; cta: string; hashtags: string[] }
+}
+
 export function openAiIsConfigured() { return Boolean(gatewayKey) }
