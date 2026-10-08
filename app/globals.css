@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
-:root { --ivory: #f3eee7; --charcoal: #11100f; --stone: #83766a; --sand: #d8c2a1; --bronze: #c9a879; --espresso: #241a15; }
+:root { --ivory: #f3eee7; --charcoal: #11100f; --stone: #83766a; --sand: #d8c2a1; --bronze: #c9a879; --espresso: #241a15; --surface-muted: #ebe7df; --line-soft: rgba(30,30,27,.16); --focus-ring: #c9a879; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--ivory); color: var(--charcoal); font-family: 'DM Sans', sans-serif; }
@@ -15,7 +15,7 @@ body { margin: 0; background: var(--ivory); color: var(--charcoal); font-family:
 .doma-orbit { border: 1px solid rgba(201,168,121,.3); border-radius: 999px; transform: rotate(-18deg); }
 .doma-orbit::after { content: ''; display: block; width: 8px; height: 8px; margin: -4px 0 0 50%; border-radius: 999px; background: var(--bronze); box-shadow: 0 0 18px var(--bronze); }
 @keyframes gridDrift { from { background-position: 0 0, 0 0; } to { background-position: 44px 44px, 44px 44px; } }
-@media (prefers-reduced-motion: no-preference) { .hero-grid { animation: gridDrift 18s linear infinite; } }
+@media (prefers-reduced-motion: no-preference) { .hero-grid { animation: gridDrift 18s linear infinite; } .value-card { transition: border-color .35s ease, transform .35s ease; } .value-card:hover { border-color: var(--bronze); transform: translateY(-4px); } }
 
 ::selection { background: var(--charcoal); color: var(--ivory); }
 
