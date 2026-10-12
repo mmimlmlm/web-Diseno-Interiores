@@ -78,6 +78,18 @@ revoke all on public.doma_documents, public.doma_knowledge_chunks, public.doma_c
 grant all on public.doma_documents, public.doma_knowledge_chunks, public.doma_conversations, public.doma_leads, public.doma_conversation_messages to service_role;
 grant execute on function public.match_doma_knowledge(vector, double precision, integer) to service_role;
 
+create table if not exists public.doma_feedback (
+  id uuid primary key default gen_random_uuid(),
+  name text check (char_length(name) <= 120),
+  comment text not null check (char_length(comment) between 10 and 2000),
+  photo_paths jsonb not null default '[]'::jsonb,
+  created_at timestamptz not null default now()
+);
+
+alter table public.doma_feedback enable row level security;
+revoke all on public.doma_feedback from anon, authenticated;
+grant all on public.doma_feedback to service_role;
+
 insert into storage.buckets (id, name, public)
-values ('doma-documents', 'doma-documents', false)
+values ('doma-documents', 'doma-documents', false), ('doma-feedback', 'doma-feedback', false)
 on conflict (id) do nothing;
